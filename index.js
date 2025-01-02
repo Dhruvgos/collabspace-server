@@ -8,14 +8,14 @@ const server = http.createServer(app);
 
 // CORS configuration: Allow requests from your frontend's URL
 app.use(cors({
-  origin: 'http://localhost:5173', // Change this to your frontend URL
+  origin: process.env.url||'http://localhost:5173', // Change this to your frontend URL
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type'],
 }));
 
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:5173', // Same as above, frontend URL
+    origin:  process.env.url||'http://localhost:5173', // Same as above, frontend URL
     methods: ['GET', 'POST'],
   },
 });
