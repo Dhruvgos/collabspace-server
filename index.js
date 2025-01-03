@@ -8,17 +8,27 @@ const app = express();
 const server = http.createServer(app);
 
 // CORS configuration: Allow requests from your frontend's URL
+const allowedOrigins = [
+  process.env.url,
+  'http://localhost:5173'
+];
 app.use(cors({
-  origin: process.env.url||'http://localhost:5173', // Change this to your frontend URL
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type'],
+  origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
+      } else {
+          callback(new Error('Not allowed by CORS'));
+      }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
 }));
-// console.log(process.env.url)
 
 const io = new Server(server, {
   cors: {
-    origin:  process.env.url||'http://localhost:5173', // Same as above, frontend URL
+    origin:  allowedOrigins, // Same as above, frontend URL
     methods: ['GET', 'POST'],
+    
   },
 });
 
