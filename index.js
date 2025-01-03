@@ -10,7 +10,7 @@ const server = http.createServer(app);
 // CORS configuration: Allow requests from your frontend's URL
 const allowedOrigins = [
   process.env.url,
-  'http://localhost:5173'
+  'http://localhost:5173','*'
 ];
 app.use(cors({
   origin: (origin, callback) => {
@@ -26,10 +26,11 @@ app.use(cors({
 
 const io = new Server(server, {
   cors: {
-    origin:  allowedOrigins, // Same as above, frontend URL
+    origin:  '*', // Same as above, frontend URL
     methods: ['GET', 'POST'],
     
   },
+  credentials: true
 });
 
 let users = {}; // Track users and their associated rooms
