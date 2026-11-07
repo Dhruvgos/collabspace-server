@@ -70,15 +70,15 @@ io.on('connection', (socket) => {
     roomsContent[roomName].code = data;
 
     // Broadcast the updated code to the room
-    io.to(roomName).emit('updateCode', data);
-    io.to(roomName).emit('updateRCode', data);
+    socket.to(roomName).emit('updateCode', data);
+    socket.to(roomName).emit('updateRCode', data);
   });
 
   // Handle cursor position updates from the client
   socket.on('updateCursor', (data) => {
     // Broadcast the cursor position to the room
     console.log(users[socket.id].roomName);
-    io.to(users[socket.id].roomName).emit('updateCursor', data);
+    socket.to(users[socket.id].roomName).emit('updateCursor', data);
   });
 
   socket.on('chatMessage', (msg) => {
@@ -95,13 +95,13 @@ io.on('connection', (socket) => {
     }
     roomsContent[roomName].drawing = data;
 
-    io.to(roomName).emit('DRAWING_UPDATE', data);
+    socket.to(roomName).emit('DRAWING_UPDATE', data);
   });
 // this is added
   socket.on("SHAPE_REMOVED", (data) => {
     const roomName = users[socket.id].roomName;
     console.log("removred")
-    io.to(roomName).emit('SHAPE_REMOVED', data);
+    socket.to(roomName).emit('SHAPE_REMOVED', data);
     // io.emit("SHAPE_REMOVED", data);
   });
 
